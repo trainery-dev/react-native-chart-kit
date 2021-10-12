@@ -685,9 +685,13 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       return Math.floor(((baseHeight - yHeight) / 4) * 3 + paddingTop);
     };
 
+    const filteredData = dataset.data.slice(0, -1).filter(value => {
+      return value !== null && !isNaN(value) && value > 0;
+    });
+
     return [`M${x(0)},${y(0)}`]
       .concat(
-        dataset.data.slice(0, -1).map((_, i) => {
+        filteredData.map((_, i) => {
           const x_mid = (x(i) + x(i + 1)) / 2;
           const y_mid = (y(i) + y(i + 1)) / 2;
           const cp_x1 = (x_mid + x(i)) / 2;

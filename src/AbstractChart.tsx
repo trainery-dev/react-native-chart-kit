@@ -1,5 +1,12 @@
 import React, { Component } from "react";
-import { Defs, Line, LinearGradient, Stop, Text } from "react-native-svg";
+import {
+  Defs,
+  Line,
+  LinearGradient,
+  Stop,
+  Text,
+  TSpan
+} from "react-native-svg";
 
 import { ChartConfig, Dataset, PartialBy } from "./HelperTypes";
 
@@ -107,25 +114,17 @@ class AbstractChart<
   }
 
   getPropsForVerticalLabels() {
-    const {
-      propsForVerticalLabels = {},
-      color,
-      labelColor = color
-    } = this.props.chartConfig;
+    const { propsForVerticalLabels = {} } = this.props.chartConfig;
     return {
-      fill: labelColor(0.8),
+      ...this.getPropsForLabels(),
       ...propsForVerticalLabels
     };
   }
 
   getPropsForHorizontalLabels() {
-    const {
-      propsForHorizontalLabels = {},
-      color,
-      labelColor = color
-    } = this.props.chartConfig;
+    const { propsForHorizontalLabels = {} } = this.props.chartConfig;
     return {
-      fill: labelColor(0.8),
+      ...this.getPropsForLabels(),
       ...propsForHorizontalLabels
     };
   }
@@ -228,7 +227,6 @@ class AbstractChart<
           x={x}
           textAnchor="end"
           y={y}
-          {...this.getPropsForLabels()}
           {...this.getPropsForHorizontalLabels()}
         >
           {yLabel}
@@ -267,7 +265,11 @@ class AbstractChart<
       hidePointsAtIndex = []
     } = this.props;
 
-    const fontSize = 12;
+    const propsForVerticalLabels = this.getPropsForVerticalLabels();
+    let fontSize = 12;
+    if (propsForVerticalLabels.fontSize) {
+      fontSize = Number(propsForVerticalLabels);
+    }
 
     let fac = 1;
     if (stackedBar) {
@@ -284,27 +286,29 @@ class AbstractChart<
           paddingRight +
           horizontalOffset) *
         fac;
-
+      const fullXLabel = `${formatXLabel(label)}${xAxisLabel}`;
+      const splitLabel = fullXLabel.split("\n");
+      const inlineSize =
+        Math.max(...splitLabel.map(e => e.length)) * (fontSize - 6);
       const y =
         height * verticalLabelsHeightPercentage +
         paddingTop +
         fontSize * 2 +
         xLabelsOffset;
-      const fullXLabel = `${formatXLabel(label)}${xAxisLabel}`;
-      const numOfLines = fullXLabel.split("\n").length;
+
       return (
         <Text
           origin={`${x}, ${y}`}
-          numOfLines={numOfLines}
           rotation={verticalLabelRotation}
           key={Math.random()}
           x={x}
           y={y}
           textAnchor={verticalLabelRotation === 0 ? "middle" : "start"}
-          {...this.getPropsForLabels()}
-          {...this.getPropsForVerticalLabels()}
+          {...propsForVerticalLabels}
         >
-          {`${formatXLabel(label)}${xAxisLabel}`}
+          <TSpan x={x - inlineSize / 2} inlineSize={inlineSize}>
+            {fullXLabel}
+          </TSpan>
         </Text>
       );
     });
