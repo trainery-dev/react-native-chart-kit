@@ -290,10 +290,12 @@ class AbstractChart<
         paddingTop +
         fontSize * 2 +
         xLabelsOffset;
-
+      const fullXLabel = `${formatXLabel(label)}${xAxisLabel}`;
+      const numOfLines = fullXLabel.split("\n").length;
       return (
         <Text
           origin={`${x}, ${y}`}
+          numOfLines={numOfLines}
           rotation={verticalLabelRotation}
           key={Math.random()}
           x={x}
