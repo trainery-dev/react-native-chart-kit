@@ -695,7 +695,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       .concat(
         renderData.map((value, i) => {
           const nextIndex = findNextSuitableIndex(i);
-          if (!isNaN(value) && nextIndex >= 0) {
+          if (typeof value === "number" && nextIndex >= 0) {
             const x_mid = (x(i) + x(nextIndex)) / 2;
             const y_mid = (y(i) + y(nextIndex)) / 2;
             const cp_x1 = (x_mid + x(i)) / 2;
