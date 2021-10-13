@@ -289,7 +289,7 @@ class AbstractChart<
       const fullXLabel = `${formatXLabel(label)}${xAxisLabel}`;
       const splitLabel = fullXLabel.split("\n");
       const inlineSize =
-        Math.max(...splitLabel.map(e => e.length)) * (fontSize - 6);
+        Math.max(...splitLabel.map(e => e.length)) * (fontSize - 4);
       const y =
         height * verticalLabelsHeightPercentage +
         paddingTop +
