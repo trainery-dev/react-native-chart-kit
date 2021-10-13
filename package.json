@@ -1,6 +1,6 @@
 {
   "name": "@trainery-dev/react-native-chart-kit",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "devDependencies": {
     "@types/react-native": "^0.62.13",
     "babel-eslint": "10.x",
