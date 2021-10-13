@@ -62,6 +62,9 @@ class AbstractChart<
   };
 
   calcBaseHeight = (data: number[], height: number) => {
+    data = data.filter(function(e) {
+      return !isNaN(e);
+    });
     const min = Math.min(...data);
     const max = Math.max(...data);
     if (min >= 0 && max >= 0) {
@@ -74,6 +77,9 @@ class AbstractChart<
   };
 
   calcHeight = (val: number, data: number[], height: number) => {
+    data = data.filter(function(e) {
+      return !isNaN(e);
+    });
     const max = Math.max(...data);
     const min = Math.min(...data);
 
@@ -178,7 +184,7 @@ class AbstractChart<
   renderHorizontalLabels = (
     config: Omit<AbstractChartConfig, "data"> & { data: number[] }
   ) => {
-    const {
+    let {
       count,
       data,
       height,
@@ -203,6 +209,9 @@ class AbstractChart<
           data[0].toFixed(decimalPlaces)
         )}${yAxisSuffix}`;
       } else {
+        data = data.filter(e => {
+          return !isNaN(e);
+        });
         const label = this.props.fromZero
           ? (this.calcScaler(data) / count) * i + Math.min(...data, 0)
           : (this.calcScaler(data) / count) * i + Math.min(...data);

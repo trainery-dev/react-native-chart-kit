@@ -687,7 +687,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     const renderData = dataset.data;
     const findNextSuitableIndex = (i: number) => {
       return renderData.findIndex((e, _i) => {
-        return _i > i && !isNaN(e) && e > 0;
+        return _i > i && !isNaN(e);
       });
     };
 
@@ -695,7 +695,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       .concat(
         renderData.map((value, i) => {
           const nextIndex = findNextSuitableIndex(i);
-          if (!isNaN(value) && value > 0 && nextIndex >= 0) {
+          if (!isNaN(value) && nextIndex >= 0) {
             const x_mid = (x(i) + x(nextIndex)) / 2;
             const y_mid = (y(i) + y(nextIndex)) / 2;
             const cp_x1 = (x_mid + x(i)) / 2;
