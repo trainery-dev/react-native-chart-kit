@@ -687,7 +687,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     const renderData = dataset.data;
     const findNextSuitableIndex = (i: number) => {
       return renderData.findIndex((e, _i) => {
-        return _i > i && !isNaN(e);
+        return _i > i && typeof e === "number";
       });
     };
 

@@ -63,7 +63,7 @@ class AbstractChart<
 
   calcBaseHeight = (data: number[], height: number) => {
     data = data.filter(function(e) {
-      return !isNaN(e);
+      return typeof e === "number";
     });
     const min = Math.min(...data);
     const max = Math.max(...data);
@@ -78,7 +78,7 @@ class AbstractChart<
 
   calcHeight = (val: number, data: number[], height: number) => {
     data = data.filter(function(e) {
-      return !isNaN(e);
+      return typeof e === "number";
     });
     const max = Math.max(...data);
     const min = Math.min(...data);
@@ -210,7 +210,7 @@ class AbstractChart<
         )}${yAxisSuffix}`;
       } else {
         data = data.filter(e => {
-          return !isNaN(e);
+          return typeof e === "number";
         });
         const label = this.props.fromZero
           ? (this.calcScaler(data) / count) * i + Math.min(...data, 0)
