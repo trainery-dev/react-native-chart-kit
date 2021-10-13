@@ -267,8 +267,11 @@ class AbstractChart<
 
     const propsForVerticalLabels = this.getPropsForVerticalLabels();
     let fontSize = 12;
-    if (propsForVerticalLabels.fontSize) {
-      fontSize = Number(propsForVerticalLabels);
+    if (
+      propsForVerticalLabels.fontSize &&
+      !isNaN(propsForVerticalLabels.fontSize)
+    ) {
+      fontSize = Number(propsForVerticalLabels.fontSize);
     }
 
     let fac = 1;
