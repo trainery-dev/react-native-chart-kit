@@ -215,9 +215,12 @@ class AbstractChart<
         const label = this.props.fromZero
           ? (this.calcScaler(data) / count) * i + Math.min(...data, 0)
           : (this.calcScaler(data) / count) * i + Math.min(...data);
-        yLabel = `${yAxisLabel}${formatYLabel(
-          label.toFixed(decimalPlaces)
-        )}${yAxisSuffix}`;
+        yLabel =
+          data.length > 0
+            ? `${yAxisLabel}${formatYLabel(
+                label.toFixed(decimalPlaces)
+              )}${yAxisSuffix}`
+            : "--";
       }
 
       const basePosition = height * verticalLabelsHeightPercentage;
