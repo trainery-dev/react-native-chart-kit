@@ -195,9 +195,7 @@ class AbstractChart<
       formatYLabel = (yLabel: string) => yLabel,
       verticalLabelsHeightPercentage = DEFAULT_X_LABELS_HEIGHT_PERCENTAGE
     } = config;
-    data = data.filter(e => {
-      return typeof e === "number";
-    });
+
     const {
       yAxisLabel = "",
       yAxisSuffix = "",
@@ -211,15 +209,15 @@ class AbstractChart<
           data[0].toFixed(decimalPlaces)
         )}${yAxisSuffix}`;
       } else {
+        data = data.filter(e => {
+          return typeof e === "number";
+        });
         const label = this.props.fromZero
           ? (this.calcScaler(data) / count) * i + Math.min(...data, 0)
           : (this.calcScaler(data) / count) * i + Math.min(...data);
-        yLabel =
-          data.length > 0
-            ? `${yAxisLabel}${formatYLabel(
-                label.toFixed(decimalPlaces)
-              )}${yAxisSuffix}`
-            : "--";
+        yLabel = `${yAxisLabel}${formatYLabel(
+          label.toFixed(decimalPlaces)
+        )}${yAxisSuffix}`;
       }
 
       const basePosition = height * verticalLabelsHeightPercentage;
