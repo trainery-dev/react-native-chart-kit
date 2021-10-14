@@ -283,7 +283,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       if (dataset.withDots == false) return;
 
       dataset.data.forEach((x, i) => {
-        if (hidePointsAtIndex.includes(i)) {
+        if (hidePointsAtIndex.includes(i) || typeof x !== "number") {
           return;
         }
 

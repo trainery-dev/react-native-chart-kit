@@ -62,9 +62,6 @@ class AbstractChart<
   };
 
   calcBaseHeight = (data: number[], height: number) => {
-    data = data.filter(function(e) {
-      return typeof e === "number";
-    });
     const min = Math.min(...data);
     const max = Math.max(...data);
     if (min >= 0 && max >= 0) {
