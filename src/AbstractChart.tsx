@@ -62,9 +62,6 @@ class AbstractChart<
   };
 
   calcBaseHeight = (data: number[], height: number) => {
-    data = data.filter(function(e) {
-      return typeof e === "number";
-    });
     const min = Math.min(...data);
     const max = Math.max(...data);
     if (min >= 0 && max >= 0) {
@@ -77,9 +74,6 @@ class AbstractChart<
   };
 
   calcHeight = (val: number, data: number[], height: number) => {
-    data = data.filter(function(e) {
-      return typeof e === "number";
-    });
     const max = Math.max(...data);
     const min = Math.min(...data);
 
@@ -184,7 +178,7 @@ class AbstractChart<
   renderHorizontalLabels = (
     config: Omit<AbstractChartConfig, "data"> & { data: number[] }
   ) => {
-    let {
+    const {
       count,
       data,
       height,
@@ -209,18 +203,12 @@ class AbstractChart<
           data[0].toFixed(decimalPlaces)
         )}${yAxisSuffix}`;
       } else {
-        data = data.filter(e => {
-          return typeof e === "number";
-        });
         const label = this.props.fromZero
           ? (this.calcScaler(data) / count) * i + Math.min(...data, 0)
           : (this.calcScaler(data) / count) * i + Math.min(...data);
-        yLabel =
-          data.length > 0
-            ? `${yAxisLabel}${formatYLabel(
-                label.toFixed(decimalPlaces)
-              )}${yAxisSuffix}`
-            : "--";
+        yLabel = `${yAxisLabel}${formatYLabel(
+          label.toFixed(decimalPlaces)
+        )}${yAxisSuffix}`;
       }
 
       const basePosition = height * verticalLabelsHeightPercentage;

@@ -685,9 +685,10 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       return Math.floor(((baseHeight - yHeight) / 4) * 3 + paddingTop);
     };
     const renderData = dataset.data;
+
     const findNextSuitableIndex = (i: number) => {
       return renderData.findIndex((e, _i) => {
-        return _i > i && typeof e === "number";
+        return _i > i && !isNaN(e) && e > 0;
       });
     };
 
@@ -695,14 +696,14 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       .concat(
         renderData.map((value, i) => {
           const nextIndex = findNextSuitableIndex(i);
-          if (typeof value === "number" && nextIndex >= 0) {
-            const x_mid = (x(i) + x(nextIndex)) / 2;
-            const y_mid = (y(i) + y(nextIndex)) / 2;
+          if (!isNaN(value) && value > 0 && nextIndex >= 0) {
+            const x_mid = (x(i) + x(i + 1)) / 2;
+            const y_mid = (y(i) + y(i + 1)) / 2;
             const cp_x1 = (x_mid + x(i)) / 2;
-            const cp_x2 = (x_mid + x(nextIndex)) / 2;
+            const cp_x2 = (x_mid + x(i + 1)) / 2;
             return (
               `Q ${cp_x1}, ${y(i)}, ${x_mid}, ${y_mid}` +
-              ` Q ${cp_x2}, ${y(nextIndex)}, ${x(nextIndex)}, ${y(nextIndex)}`
+              ` Q ${cp_x2}, ${y(i + 1)}, ${x(i + 1)}, ${y(i + 1)}`
             );
           } else {
             return "";
