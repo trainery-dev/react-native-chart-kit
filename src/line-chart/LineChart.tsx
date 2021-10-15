@@ -152,6 +152,17 @@ export interface LineChartProps extends AbstractChartProps {
     getColor: (opacity: number) => string;
   }) => void;
   /**
+   * Callback that is called when a data point is long clicked.
+   */
+  onDataPointLongClick?: (data: {
+    index: number;
+    value: number;
+    dataset: Dataset;
+    x: number;
+    y: number;
+    getColor: (opacity: number) => string;
+  }) => void;
+  /**
    * Style of the container view of the chart.
    */
   style?: Partial<ViewStyle>;
@@ -260,12 +271,14 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     height,
     paddingTop,
     paddingRight,
-    onDataPointClick
+    onDataPointClick,
+    onDataPointLongClick
   }: Pick<
     AbstractChartConfig,
     "data" | "width" | "height" | "paddingRight" | "paddingTop"
   > & {
     onDataPointClick: LineChartProps["onDataPointClick"];
+    onDataPointLongClick: LineChartProps["onDataPointLongClick"];
   }) => {
     const output: ReactNode[] = [];
     const datas = this.getDatas(data);
@@ -308,6 +321,21 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
           });
         };
 
+        const onLongPress = () => {
+          if (!onDataPointLongClick || hidePointsAtIndex.includes(i)) {
+            return;
+          }
+
+          onDataPointLongClick({
+            index: i,
+            value: x,
+            dataset,
+            x: cx,
+            y: cy,
+            getColor: opacity => this.getColor(dataset, opacity)
+          });
+        };
+
         output.push(
           <Circle
             key={Math.random()}
@@ -319,6 +347,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
                 : this.getColor(dataset, 0.9)
             }
             onPress={onPress}
+            onLongPress={onLongPress}
             {...this.getPropsForDots(x, i)}
           />,
           <Circle
@@ -356,6 +385,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
     scrollableInfoOffset
   }: AbstractChartConfig & {
     onDataPointClick: LineChartProps["onDataPointClick"];
+    onDataPointLongClick: LineChartProps["onDataPointLongClick"];
     scrollableDotHorizontalOffset: Animated.Value;
   }) => {
     const output = [];
@@ -821,6 +851,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
       style = {},
       decorator,
       onDataPointClick,
+      onDataPointLongClick,
       verticalLabelRotation = 0,
       horizontalLabelRotation = 0,
       formatYLabel = yLabel => yLabel,
@@ -961,7 +992,8 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
                   data: data.datasets,
                   paddingTop: paddingTop as number,
                   paddingRight: paddingRight as number,
-                  onDataPointClick
+                  onDataPointClick,
+                  onDataPointLongClick
                 })}
             </G>
             <G>
@@ -973,6 +1005,7 @@ class LineChart extends AbstractChart<LineChartProps, LineChartState> {
                   paddingTop: paddingTop as number,
                   paddingRight: paddingRight as number,
                   onDataPointClick,
+                  onDataPointLongClick,
                   scrollableDotHorizontalOffset
                 })}
             </G>
