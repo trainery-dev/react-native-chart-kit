@@ -21,7 +21,7 @@
     "inlineSources": true,
     "esModuleInterop": true,
     "noErrorTruncation": true,
-    "jsx": "react-native",
-    "exclude": ["typings/browser.d.ts", "typings/browser", "node_modules"]
-  }
+    "jsx": "react-native"
+  },
+  "exclude": ["typings/browser.d.ts", "typings/browser", "node_modules"]
 }
